@@ -1,0 +1,17 @@
+function add (a, b) {                               const add = (a, b) => {
+  return a + b                                        return a + b
+}                                                   }
+
+
+const obj = {                                       const obj = {
+  method: function () {                               method() {
+
+  }                                                   }
+}                                                   }
+
+
+$('...').on('click', function (e) {                 $('...').on('click', (e) => {
+
+})                                                  })
+
+
