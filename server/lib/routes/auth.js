@@ -1,5 +1,3 @@
-"use strict";
-
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
@@ -7,6 +5,7 @@ exports.login = async (ctx) => {
   // ctx.request, ctx.response => objets Koa
   // ctx.req, ctx.res => objets originaux module "http"
   const username = ctx.request.body.username;
+  console.log({ username });
 
   // TODO check dans redis si le username existe
 

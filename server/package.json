@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "@koa/router": "^9.0.1",
     "chai": "^4.2.0",
     "chalk": "^4.1.0",

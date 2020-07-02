@@ -1,5 +1,3 @@
-"use strict";
-
 const config = require("config");
 const routes = require("./lib/routes"); // ./lib/routes.js ou ./lib/routes/index.js
 const http = require("http");
@@ -11,6 +9,7 @@ const socketIo = require("socket.io");
 const socketIoRedisAdapter = require("socket.io-redis");
 const websocket = require("./lib/websocket");
 const chalk = require("chalk");
+const cors = require("@koa/cors");
 
 const app = new Koa();
 const router = new Router();
@@ -28,6 +27,7 @@ router
   });
 
 app
+  .use(cors())
   .use(async (ctx, next) => {
     const start = Date.now(); // ms
     await next();
