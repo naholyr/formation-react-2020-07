@@ -1,0 +1,39 @@
+.TrialItem {
+  display: block;
+  clear: both;
+  margin: 0;
+  padding: 0;
+
+  strong {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0.5rem;
+    width: 200px;
+    text-align: right;
+  }
+  &.myself strong {
+    font-style: italic;
+  }
+
+  span {
+    text-transform: uppercase;
+    display: block;
+    float: left;
+    width: 1rem;
+    height: 1rem;
+    text-align: center;
+    margin: 2px;
+    padding: 0.5rem;
+  }
+
+  span.correct {
+    background: tomato;
+  }
+  span.incorrect {
+    background: cornflowerblue;
+  }
+  span.misplaced {
+    background: palegoldenrod;
+  }
+}

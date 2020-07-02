@@ -3,11 +3,73 @@ import "./App.css";
 import LoginPage from "./login/LoginPage/LoginPage";
 import GamePage from "./game/GamePage/GamePage";
 
-function App() {
-  const [authenticated, setAuthenticated] = React.useState(false);
-  const [checkingToken, setCheckingToken] = React.useState(true);
+// FIXME temp data
+const game = {
+  scores: [
+    { name: "Juju", score: 52 },
+    { name: "Nicolas", score: 52 },
+  ],
+  trials: [
+    {
+      name: "Nicolas",
+      word: [
+        ["T", 0],
+        ["O", 2],
+        ["U", 0],
+        ["R", 1],
+        ["N", 0],
+        ["E", 2],
+        ["E", 1],
+      ],
+    },
+    {
+      name: "Juju",
+      word: [
+        ["J", 0],
+        ["O", 2],
+        ["Y", 0],
+        ["E", 1],
+        ["U", 0],
+        ["S", 0],
+        ["E", 1],
+      ],
+    },
+    {
+      name: "Nicolas",
+      word: [
+        ["C", 0],
+        ["O", 2],
+        ["U", 0],
+        ["T", 0],
+        ["E", 1],
+        ["A", 0],
+        ["U", 0],
+      ],
+    },
+    {
+      name: "Nicolas",
+      word: [
+        ["P", 2],
+        ["O", 2],
+        ["I", 0],
+        ["R", 0],
+        ["I", 2],
+        ["E", 2],
+        ["R", 2],
+      ],
+    },
+  ],
+  wordLength: 7,
+};
 
-  console.log("App#render", { authenticated, checkingToken });
+function App() {
+  const [username, setUsername] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const authenticated = username !== null;
+
+  React.useEffect(() => {
+    console.log("App#render", { username, loading });
+  }, [loading, username]);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,16 +81,16 @@ function App() {
       )
         .then((response) => response.json())
         .then((result) => {
-          setAuthenticated(true);
-          setCheckingToken(false);
+          setUsername(result.username);
+          setLoading(false);
         });
     } else {
-      setCheckingToken(false);
+      setLoading(false);
     }
   }, []); // deps = [] => didMount/willUnmount
 
-  const handleLogin = () => {
-    setAuthenticated(true);
+  const handleLogin = (username, token) => {
+    setUsername(username);
   };
 
   return (
@@ -36,11 +98,11 @@ function App() {
       <header className="App-header">
         <h1>Motux</h1>
       </header>
-      {checkingToken ? (
-        <p>Vérification du token...</p>
+      {loading ? (
+        <p>Chargement…</p>
       ) : (
         <>
-          {authenticated && <GamePage />}
+          {authenticated && <GamePage game={game} username={username} />}
           {!authenticated && <LoginPage onLogin={handleLogin} />}
         </>
       )}

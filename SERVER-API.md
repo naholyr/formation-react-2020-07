@@ -2,13 +2,13 @@
 
 ## Types
 
-### ``Token``
+### `Token`
 
 ```js
-string
+string;
 ```
 
-### ``Game``
+### `Game`
 
 ```js
 {
@@ -18,7 +18,7 @@ string
 }
 ```
 
-### ``Score``
+### `Score`
 
 ```js
 {
@@ -27,38 +27,38 @@ string
 }
 ```
 
-### ``Trial``
+### `Trial`
 
 ```js
 {
   name: string, // player
-  word: [ char: string, status: 0|1|2 ], // tried word
+  word: [ [ char: string, status: 0|1|2 ] ], // tried word
 }
 ```
 
 ## Authentication (http)
 
-### ``POST /login``
+### `POST /login`
 
-- Input: ``{ username: string }``
-- Output: ``{ token: Token }``
+- Input: `{ username: string }`
+- Output: `{ token: Token }`
 
-### ``GET /whoami``
+### `GET /whoami`
 
-- Input (query string): ``{ token: Token }``
-- Output: ``{ username: string }``
+- Input (query string): `{ token: Token }`
+- Output: `{ username: string }`
 
 ## Authentication (websocket)
 
-- client → ``login(token: Token, cb: (game: Game) => any)``
+- client → `login(token: Token, cb: (game: Game) => any)`
 
 ## Game (websocket)
 
-- client → ``tryWord(word: string)``
-- server → ``disableInput()``
-- server → ``enableInput()``
-- server → ``failure(code: string)``
-- server → ``addTrial(trial: Trial)``
-- server → ``winner(username: string)``
-- server → ``updateScores(scores: [Score])``
-- server → ``wordLength(wordLength: number)``
+- client → `tryWord(word: string)`
+- server → `disableInput()`
+- server → `enableInput()`
+- server → `failure(code: string)`
+- server → `addTrial(trial: Trial)`
+- server → `winner(username: string)`
+- server → `updateScores(scores: [Score])`
+- server → `wordLength(wordLength: number)`
