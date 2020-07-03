@@ -8,14 +8,27 @@ const GuessForm = ({ onTryWord }) => {
   const wordLength = useSelector((state) => state.game.wordLength);
   const disabled = useSelector((state) => state.game.inputDisabled);
 
+  const wordRef = React.useRef();
+
+  // When switching from enabled to disabled, empty
+  // When switching from disabled to enabled, focus
+  React.useEffect(() => {
+    if (disabled) {
+      wordRef.current.value = "";
+    } else {
+      wordRef.current.focus();
+    }
+  }, [disabled]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onTryWord(e.target.elements.word.value);
+    onTryWord(wordRef.current.value);
   };
 
   return (
     <form className="GuessForm" onSubmit={handleSubmit}>
       <input
+        ref={wordRef}
         type="text"
         name="word"
         pattern="[^-_ '&quot;]+"
