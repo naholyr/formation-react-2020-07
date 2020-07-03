@@ -26,6 +26,7 @@ class LoginButton extends React.Component {
   }
 
   render() {
+    console.log("LoginButton#render");
     return <button className="LoginButton">Log in</button>;
   }
 }

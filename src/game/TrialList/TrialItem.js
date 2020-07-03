@@ -11,7 +11,6 @@ const STATUS_TO_CLASSNAME = {
 };
 
 const TrialItem = ({ trial, isMyself }) => {
-  console.log(trial);
   return (
     <li className={cx("TrialItem", { myself: isMyself })}>
       <strong>{trial.name}</strong>

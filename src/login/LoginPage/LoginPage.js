@@ -67,7 +67,6 @@ const LoginPage = ({ onLogin, room }) => {
       }) // Promise<Object>
       .then((result) => {
         // Side-effect: store token
-        localStorage.setItem("token", result.token);
         onLogin(username, result.token);
       });
   };

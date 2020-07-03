@@ -1,28 +1,37 @@
 import React from "react";
-import { number } from "prop-types";
+import { func } from "prop-types";
 import "./GuessForm.scss";
+import { useSelector } from "react-redux";
 
-// TODO prop "wordLength"
-const GuessForm = ({ wordLength }) => {
+// TODO prop "onTryWord"
+const GuessForm = ({ onTryWord }) => {
+  const wordLength = useSelector((state) => state.game.wordLength);
+  const disabled = useSelector((state) => state.game.inputDisabled);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onTryWord(e.target.elements.word.value);
+  };
+
   return (
-    <form className="GuessForm">
+    <form className="GuessForm" onSubmit={handleSubmit}>
       <input
         type="text"
         name="word"
         pattern="[^-_ '&quot;]+"
-        required=""
-        // TODO following props depend on wordLength
-        minLength={7}
-        maxLength={7}
-        placeholder="7 lettres"
-        style={{ width: "14rem" }} // 2rem/letter
+        required={true}
+        disabled={disabled}
+        minLength={wordLength}
+        maxLength={wordLength}
+        placeholder={`${wordLength} lettres`}
+        style={{ width: `${2 * wordLength}rem` }} // 2rem/letter
       />
     </form>
   );
 };
 
 GuessForm.propTypes = {
-  wordLength: number.isRequired,
+  onTryWord: func.isRequired,
 };
 
 export default GuessForm;

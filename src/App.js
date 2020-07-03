@@ -2,96 +2,89 @@ import React from "react";
 import "./App.css";
 import LoginPage from "./login/LoginPage/LoginPage";
 import GamePage from "./game/GamePage/GamePage";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "./actions";
 
-// FIXME temp data
-const game = {
-  scores: [
-    { name: "Juju", score: 52 },
-    { name: "Nicolas", score: 52 },
-  ],
-  trials: [
-    {
-      name: "Nicolas",
-      word: [
-        ["T", 0],
-        ["O", 2],
-        ["U", 0],
-        ["R", 1],
-        ["N", 0],
-        ["E", 2],
-        ["E", 1],
-      ],
-    },
-    {
-      name: "Juju",
-      word: [
-        ["J", 0],
-        ["O", 2],
-        ["Y", 0],
-        ["E", 1],
-        ["U", 0],
-        ["S", 0],
-        ["E", 1],
-      ],
-    },
-    {
-      name: "Nicolas",
-      word: [
-        ["C", 0],
-        ["O", 2],
-        ["U", 0],
-        ["T", 0],
-        ["E", 1],
-        ["A", 0],
-        ["U", 0],
-      ],
-    },
-    {
-      name: "Nicolas",
-      word: [
-        ["P", 2],
-        ["O", 2],
-        ["I", 0],
-        ["R", 0],
-        ["I", 2],
-        ["E", 2],
-        ["R", 2],
-      ],
-    },
-  ],
-  wordLength: 7,
+/* Easy facile
+const useSelector = select => {
+  const store = useContext(ReduxContext); // TODO
+  const [data, setData] = React.useState(() => select(store.getState()));
+
+  React.useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      const newState = store.getState();
+      const newData = select(newState);
+      if (data !== newData) {
+        console.log("setData");
+        setData(newData);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [data]);
+
+  return data;
+}
+*/
+
+const useMousePosition = () => {
+  const [pos, setPos] = React.useState({});
+  React.useEffect(() => {
+    const handler = (e) => {
+      setPos({ x: e.x, y: e.y });
+    };
+    document.addEventListener("mousemove", handler);
+    return () => {
+      document.removeEventListener("mousemove", handler);
+    };
+  });
+  return pos;
+};
+
+const MouseCoords = () => {
+  const pos = useMousePosition();
+
+  return (
+    <div>
+      {pos.x},{pos.y}
+    </div>
+  );
 };
 
 function App() {
-  const [username, setUsername] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const selector = (appState) => {
+    return appState.username;
+  };
+  const username = useSelector(selector);
+
+  const dispatch = useDispatch();
+  const handleLogin = (username, token) => {
+    dispatch(login(username, token));
+  };
+
+  const loading = useSelector((state) => state.loading);
   const authenticated = username !== null;
+
+  /* Abonnement au store (le truc qu'on n'a pas envie de réécrire à chaque fois, remplacé par useSelector)
+  const [username, setUsername] = React.useState(null);
+  React.useEffect(() => {
+    const unsubscribe = window.store.subscribe(() => {
+      const newState = window.store.getState();
+      if (username !== newState.username) {
+        console.log("setUsername");
+        setUsername(newState.username);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [username]);
+  */
 
   React.useEffect(() => {
     console.log("App#render", { username, loading });
   }, [loading, username]);
-
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch(
-        `${process.env.REACT_APP_ENDPOINT}/whoami?token=${encodeURIComponent(
-          token
-        )}`
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          setUsername(result.username);
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, []); // deps = [] => didMount/willUnmount
-
-  const handleLogin = (username, token) => {
-    setUsername(username);
-  };
 
   return (
     <div className="App">
@@ -102,10 +95,11 @@ function App() {
         <p>Chargement…</p>
       ) : (
         <>
-          {authenticated && <GamePage game={game} username={username} />}
+          {authenticated && <GamePage />}
           {!authenticated && <LoginPage onLogin={handleLogin} />}
         </>
       )}
+      <MouseCoords />
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import React from "react";
-import { Trial } from "../types";
-import { arrayOf, string } from "prop-types";
 import TrialItem from "./TrialItem";
 import "./TrialList.scss";
+import { useSelector } from "react-redux";
 
-const TrialList = ({ trials, username }) => {
+const TrialList = () => {
+  const username = useSelector((state) => state.username);
+  const trials = useSelector((state) => state.game.trials);
+
   return (
     <ul className="TrialList">
       {trials.map((trial, index) => (
@@ -17,11 +19,6 @@ const TrialList = ({ trials, username }) => {
       ))}
     </ul>
   );
-};
-
-TrialList.propTypes = {
-  trials: arrayOf(Trial.isRequired).isRequired,
-  username: string.isRequired,
 };
 
 export default TrialList;
